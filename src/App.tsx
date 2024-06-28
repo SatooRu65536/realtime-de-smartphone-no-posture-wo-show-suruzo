@@ -1,11 +1,22 @@
-import { SocketData, SocketState, useSocket } from "./hooks/useSocket";
+import { useArray } from './hooks/useArray';
+import { SocketState, useSocket } from './hooks/useSocket';
+import { Sensor, tryParseSensor } from './schema/sensor';
 
 export default function App() {
-  const handler = (state: SocketState, data: SocketData) => {
-    console.log(state, data);
-  }
+  const [state, { push }] = useArray<Sensor>([], 10);
 
-  useSocket(handler);
+  useSocket((_: SocketState, data: string) => {
+    const sensor = tryParseSensor(data);
+    if (!sensor) return;
 
-  return <main>Hello</main>;
+    push(sensor);
+  });
+
+  return (
+    <main>
+      {state.map((sensor, i) => (
+        <p key={i}>{JSON.stringify(sensor)}</p>
+      ))}
+    </main>
+  );
 }
