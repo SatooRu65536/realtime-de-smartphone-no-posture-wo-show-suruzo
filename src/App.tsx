@@ -1,18 +1,11 @@
-import { useEffect } from "react";
-import { listen } from "@tauri-apps/api/event";
+import { SocketData, SocketState, useSocket } from "./hooks/useSocket";
 
 export default function App() {
-  useEffect(() => {
-    (async () => {
-      const unlisten = await listen("message", (event) => {
-        console.log(event.payload);
-      });
+  const handler = (state: SocketState, data: SocketData) => {
+    console.log(state, data);
+  }
 
-      return () => {
-        unlisten();
-      };
-    })();
-  }, []);
+  useSocket(handler);
 
   return <main>Hello</main>;
 }
