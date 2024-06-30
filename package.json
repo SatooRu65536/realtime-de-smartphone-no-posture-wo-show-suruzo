@@ -10,9 +10,13 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@react-three/drei": "^9.107.3",
+    "@react-three/fiber": "^8.16.8",
     "@tauri-apps/api": "^1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "styled-components": "^6.1.11",
+    "three": "^0.166.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
