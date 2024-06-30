@@ -3,6 +3,7 @@ import Player from './components/Player';
 import { useArray } from './hooks/useArray';
 import { SocketState, useSocket } from './hooks/useSocket';
 import { Sensor, tryParseSensor } from './schema/sensor';
+import { useRotation } from './hooks/useRotation';
 
 const Main = styled.main`
   height: 100vh;
@@ -10,9 +11,12 @@ const Main = styled.main`
 `;
 
 export default function App() {
-  const [state, { push }] = useArray<Sensor>([], 10);
+  const [_sensorValues, { push }] = useArray<Sensor>([], 10);
+  const [rotation, { setRotation: _setRotation }] = useRotation([0, 0, 0]);
 
-  useSocket((_: SocketState, data: string) => {
+  useSocket((state: SocketState, data: string) => {
+    if (state !== 'Received') return;
+
     const sensor = tryParseSensor(data);
     if (!sensor) return;
 
@@ -21,7 +25,7 @@ export default function App() {
 
   return (
     <Main>
-      <Player />
+      <Player rotation={rotation} />
     </Main>
   );
 }

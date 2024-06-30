@@ -1,14 +1,18 @@
 import { useGLTF } from '@react-three/drei';
+import { Euler, type Quaternion } from 'three';
 
 interface Props {
+  rotation: Quaternion;
   src: string;
 }
 
-export default function MobileModel({ src }: Props) {
+export default function MobileModel({ rotation, src }: Props) {
   const { scene } = useGLTF(src);
+  const euler = new Euler();
+  euler.setFromQuaternion(rotation);
 
   return (
-    <mesh scale={10}>
+    <mesh scale={10} rotation={euler}>
       <primitive object={scene} />
     </mesh>
   );
