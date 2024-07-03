@@ -37,8 +37,11 @@ pub fn start_server(app: &mut App) {
             "Server started".to_string(),
         );
 
+        println!("Server started");
         recv(listener, app_handle);
     });
+
+    print!("Server Stop");
 }
 
 fn recv(listener: TcpListener, app_handle: AppHandle) {
@@ -102,8 +105,6 @@ fn read(socket: &mut std::net::TcpStream, app_handle: &AppHandle) {
 }
 
 fn emit_socket_payload(app_handle: &AppHandle, state: SocketState, data: String) {
-    println!("{:?}: {}", state, data);
     let payload = SocketPayload { state, data };
-
     app_handle.emit_all("socket", payload.clone()).unwrap();
 }

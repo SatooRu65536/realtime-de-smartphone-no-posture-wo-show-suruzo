@@ -12,7 +12,7 @@ export default function MobileModel({ rotation, src }: Props) {
   euler.setFromQuaternion(rotation);
 
   return (
-    <mesh scale={10} rotation={euler}>
+    <mesh scale={10} rotation={[-euler.x, -euler.z, -euler.y]}>
       <primitive object={scene} />
     </mesh>
   );

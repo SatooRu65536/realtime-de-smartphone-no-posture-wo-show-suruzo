@@ -1,12 +1,14 @@
 import { useState } from 'react';
 
+type Filter<T> = (element: T, array: T[]) => boolean;
+
 /**
  * 配列を扱うためのカスタムフック
  * @param initialArray 初期配列
  * @param maxLength 配列の最大長
  * @returns
  */
-export const useArray = <T>(initialArray: T[] = [], maxLength = -1) => {
+export const useArray = <T>(initialArray: T[] = [], filter?: Filter<T> | number) => {
   const [array, setArray] = useState(initialArray);
 
   /**
@@ -16,7 +18,8 @@ export const useArray = <T>(initialArray: T[] = [], maxLength = -1) => {
   const push = (element: T) => {
     setArray((prev) => {
       const clone = [...prev, element];
-      if (maxLength !== -1 && prev.length >= maxLength) clone.shift();
+      if (typeof filter === 'number' && prev.length >= filter) clone.shift();
+      if (typeof filter === 'function') return clone.filter((e) => filter(e, clone));
       return clone;
     });
   };

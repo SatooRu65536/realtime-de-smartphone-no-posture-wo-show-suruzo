@@ -1,21 +1,27 @@
 import { z } from 'zod';
 
 /**
+ * センサーデータの値のスキーマ
+ */
+export const SensorDataSchema = z.object({
+  x: z.number(),
+  y: z.number(),
+  z: z.number(),
+});
+
+/**
  * センサーデータのスキーマ
  */
 export const SensorSchema = z.object({
   timestamp: z.number(),
-  accelerometer: z.object({
-    x: z.number(),
-    y: z.number(),
-    z: z.number(),
-  }),
-  gyroscope: z.object({
-    x: z.number(),
-    y: z.number(),
-    z: z.number(),
-  }),
+  accelerometer: SensorDataSchema,
+  gyroscope: SensorDataSchema,
 });
+
+/**
+ * センサーデータの値の型
+ */
+export type SensorData = z.infer<typeof SensorDataSchema>;
 
 /**
  * センサーデータ型

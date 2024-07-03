@@ -1,10 +1,11 @@
 import socket
 import json
 import time
+import random
 
 
 def main():
-    target_ip: str = "127.0.0.1"
+    target_ip: str = "192.168.101.72"
     target_port: int = 12345
 
     # ソケットオブジェクトの作成
@@ -13,7 +14,7 @@ def main():
     # サーバに接続
     tcp_client.connect((target_ip, target_port))
 
-    for i in range(20):
+    for i in range(200000):
         # サーバにデータを送信
         send_data = sensor_data(i)
         send_data_encode = json.dumps(send_data).encode()
@@ -21,7 +22,7 @@ def main():
 
         print(f" > {i}: {send_data_encode}")
 
-        time.sleep(1 / 2)
+        time.sleep(1 / 30)
 
     # ソケットを閉じる
     tcp_client.close()
@@ -31,17 +32,18 @@ def sensor_data(i: int):
     return {
         "timestamp": time.time(),
         "accelerometer": {
-            "x": i,
-            "y": i + 1,
-            "z": i + 2,
+            "x": 0,
+            "y": 9.8,
+            "z": 0,
         },
         "gyroscope": {
-            "x": i + 3,
-            "y": i + 4,
-            "z": i + 5,
+            "x": 0,
+            "y": 0,
+            "z": 0,
         },
     }
 
 
 if __name__ == "__main__":
+    time.time()
     main()
