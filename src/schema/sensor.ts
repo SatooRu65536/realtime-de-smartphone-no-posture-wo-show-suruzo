@@ -1,46 +1,23 @@
 import { z } from 'zod';
 
 /**
- * センサーデータの値のスキーマ
+ * クォータニオンのスキーマ
  */
-export const SensorDataSchema = z.object({
-  x: z.number(),
-  y: z.number(),
-  z: z.number(),
+export const quatSchema = z.tuple([z.number(), z.number(), z.number(), z.number()]);
+
+/**
+ *クォータニオンの型
+ */
+export type Quat = z.infer<typeof quatSchema>;
+
+/**
+ * クォータニオンのレスポンスのスキーマ
+ */
+export const quatResponseSchema = z.object({
+  quaternions: z.array(quatSchema),
 });
 
 /**
- * センサーデータのスキーマ
+ * クォータニオンのレスポンスの型
  */
-export const SensorSchema = z.object({
-  timestamp: z.number(),
-  accelerometer: SensorDataSchema,
-  gyroscope: SensorDataSchema,
-});
-
-/**
- * センサーデータの値の型
- */
-export type SensorData = z.infer<typeof SensorDataSchema>;
-
-/**
- * センサーデータ型
- */
-export type Sensor = z.infer<typeof SensorSchema>;
-
-/**
- * センサーデータをパースする
- * @param data センサーデータ
- * @returns パースされたセンサーデータ
- */
-export function tryParseSensor(data: string): Sensor | null {
-  try {
-    const parsedData = JSON.parse(data);
-    const sensor = SensorSchema.safeParse(parsedData);
-
-    if (sensor.success) return sensor.data;
-    return null;
-  } catch {
-    return null;
-  }
-}
+export type QuatResponse = z.infer<typeof quatResponseSchema>;
